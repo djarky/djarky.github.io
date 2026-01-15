@@ -1,314 +1,138 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-	
-	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2337897758974407"
-     crossorigin="anonymous"></script>
-	
-    <meta charset="UTF-8">
-    <title>Mi Perfil de GitHub</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Perfil de GitHub de djarky — desarrollador de videojuegos, proyectos GameBoy/GBDK, ESP8266, Arduino y herramientas de hardware/PCB." />
+  <title>djarky — desarrollador de videojuegos y hardware</title>
 
-<link href="http://fonts.cdnfonts.com/css/common-pixel" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
-<style> @import url('http://fonts.cdnfonts.com/css/common-pixel'); </style>
-
+  <style>
+    :root{ --bg:#0f1720; --header:#111827; --accent:#00aaff; --muted:#94a3b8; --max-width:1100px }
+    *{box-sizing:border-box}
+    body{ margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: linear-gradient(180deg,#071025 0%, #0f1720 100%); color:#e6eef6; -webkit-font-smoothing:antialiased }
+    header{ background:var(--header); display:flex; align-items:center; gap:16px; padding:18px; justify-content:space-between }
+    .site-title{ display:flex; gap:12px; align-items:center; width:60% }
+    .brand{ font-family: 'Press Start 2P', system-ui, monospace; font-size:18px; color:var(--accent); white-space:nowrap }
+    nav ul{ list-style:none; margin:0; padding:0; display:flex; gap:14px; align-items:center }
+    nav a{ color:#e6eef6; text-decoration:none; font-weight:600 }
+    main{ max-width:var(--max-width); margin:28px auto; padding:20px; background: rgba(255,255,255,0.02); border-radius:8px }
+    h1,h2{ margin:0 0 12px 0 }
+    h2{ color:var(--accent); font-size:16px; margin-top:18px }
+    p{ color:var(--muted); line-height:1.5 }
+    .projects-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:12px; margin-top:12px }
+    .project{ background:rgba(255,255,255,0.02); padding:12px; border-radius:6px }
+    .project a{ color:var(--accent); font-weight:700 }
+    .meta{ color:var(--muted); font-size:13px }
+    footer{ text-align:center; color:var(--muted); padding:18px; font-size:13px }
+    #game{ position:relative; width:100%; max-width:900px; height:300px; margin:18px auto; background:#000; border-radius:6px; overflow:hidden }
+    .paddle{ position:absolute; width:10px; height:50px; background:#fff; top:125px }
+    #ball{ position:absolute; width:10px; height:10px; background:#fff; border-radius:2px }
+    @media (max-width:560px){ .site-title{ width:auto } nav ul{ gap:8px; font-size:14px; flex-wrap:wrap } #game{ height:220px } }
+  </style>
 </head>
 <body>
-    <!-- Encabezado de la página -->
-    <header>
-        <h1>Mi Perfil de GitHub</h1>
-       <nav>
-    <ul>
+  <header>
+    <div class="site-title">
+      <div class="brand">djarky</div>
+      <div>
+        <div style="font-weight:700">Desarrollador de videojuegos y hardware</div>
+        <div style="font-size:12px; color:var(--muted)">GameBoy/GBDK · Arduino · ESP8266 · PCBs</div>
+      </div>
+    </div>
+
+    <nav aria-label="Navegación principal">
+      <ul>
         <li><a href="#sobre-mi">Inicio</a></li>
         <li><a href="#proyectos">Proyectos</a></li>
         <li><a href="#tutoriales">Tutoriales</a></li>
-    </ul>
+        <li><a href="https://github.com/djarky" target="_blank" rel="noopener">GitHub</a></li>
+      </ul>
+    </nav>
+  </header>
 
+  <main>
+    <section id="sobre-mi" aria-labelledby="sobre-mi-title">
+      <h1 id="sobre-mi-title">Sobre mí</h1>
+      <p>Soy desarrollador de videojuegos y hardware hobbyista con experiencia en proyectos para GameBoy (GBDK), hacks con ESP8266 / NodeMCU, y diseño de PCBs. Me gusta compartir tutoriales y herramientas útiles para la comunidad.</p>
+      <p>Trabajo con C/C++ para microcontroladores, Python para utilidades y scripts, y herramientas para diseño PCB y modelado (Blender/KiCad).</p>
+    </section>
 
-    </header>
+    <section id="game" aria-label="Mini juego pong" role="region">
+      <div id="game" tabindex="0">
+        <div id="paddle1" class="paddle" aria-hidden="true"></div>
+        <div id="paddle2" class="paddle" aria-hidden="true"></div>
+        <div id="ball" aria-hidden="true"></div>
+      </div>
+      <p style="font-size:13px; color:var(--muted); text-align:center; margin-top:8px;">Usa Flecha Arriba/Abajo para mover la paleta derecha.</p>
+    </section>
 
-</nav>
+    <section id="proyectos" aria-labelledby="proyectos-title">
+      <h2 id="proyectos-title">Proyectos públicos (indexados desde GitHub)</h2>
+      <div class="projects-grid">
+        <div class="project"><a href="https://github.com/djarky/Keychan" target="_blank" rel="noopener">Keychan</a><div class="meta">Gbdk2020 game — C — (MIT)</div></div>
+        <div class="project"><a href="https://github.com/djarky/UwU-tv" target="_blank" rel="noopener">UwU-tv</a><div class="meta">iptv YouTube and more — JavaScript</div></div>
+        <div class="project"><a href="https://github.com/djarky/NDS-Controller-nodeMCU" target="_blank" rel="noopener">NDS-Controller-nodeMCU</a><div class="meta">Hack of NDS Controller app to control Nodemcu — C++</div></div>
+        <div class="project"><a href="https://github.com/djarky/DDR2PIU" target="_blank" rel="noopener">DDR2PIU</a><div class="meta">Python scripts to convert ddr simfiles into piu simfiles — Python</div></div>
+        <div class="project"><a href="https://github.com/djarky/ArduinoMidiFader" target="_blank" rel="noopener">ArduinoMidiFader</a><div class="meta">Hardware MIDI fader projects — C++</div></div>
+        <div class="project"><a href="https://github.com/djarky/PDF_Visual_editor_python" target="_blank" rel="noopener">PDF_Visual_editor_python</a><div class="meta">pdf editor — Python</div></div>
+        <div class="project"><a href="https://github.com/djarky/PCBs" target="_blank" rel="noopener">PCBs</a><div class="meta">Various PCBs — Prolog</div></div>
+        <div class="project"><a href="https://github.com/djarky/NES-duino-projects" target="_blank" rel="noopener">NES-duino-projects</a><div class="meta">Projects based on NES Controller as input to Arduino — C</div></div>
+        <div class="project"><a href="https://github.com/djarky/GB-PROGRAMMING" target="_blank" rel="noopener">GB-PROGRAMMING</a><div class="meta">Simon game for Game Boy DMG — (legacy)</div></div>
+        <div class="project"><a href="https://github.com/djarky/SIMON-GAME---GAME-BOY-DMG-GBDK-" target="_blank" rel="noopener">SIMON-GAME---GAME-BOY-DMG-GBDK-</a><div class="meta">Simon game to Game Boy Classic — (legacy)</div></div>
+        <div class="project"><a href="https://github.com/djarky/Meow-discord-bot" target="_blank" rel="noopener">Meow-discord-bot</a><div class="meta">Meowing chan bot — Python</div></div>
+        <div class="project"><a href="https://github.com/djarky/Eagle-Libraries" target="_blank" rel="noopener">Eagle-Libraries</a><div class="meta">Custom libraries for Eagle — (components)</div></div>
+        <div class="project"><a href="https://github.com/djarky/devlog" target="_blank" rel="noopener">devlog</a><div class="meta">Devlog for Keychan — JavaScript</div></div>
+        <div class="project"><a href="https://github.com/djarky/Arduino_IR_cloner_NEC" target="_blank" rel="noopener">Arduino_IR_cloner_NEC</a><div class="meta">IRremote.h based cloner — C++</div></div>
+        <div class="project"><a href="https://github.com/djarky/NE555-stylophone" target="_blank" rel="noopener">NE555-stylophone</a><div class="meta">PCB — (schematics)</div></div>
+        <div class="project"><a href="https://github.com/djarky/ArduinoMidiFader" target="_blank" rel="noopener">ArduinoMidiFader</a><div class="meta">Hardware / MIDI (duplicate entry removed if necessary) </div></div>
+        <div class="project"><a href="https://github.com/djarky/DDR2PIU" target="_blank" rel="noopener">DDR2PIU</a><div class="meta">DDR to PIU scripts (duplicate) </div></div>
+        <div class="project"><a href="https://github.com/djarky/Digispark_PIU_PAD" target="_blank" rel="noopener">Digispark_PIU_PAD</a><div class="meta">Pump It Up PIU PAD joystick using digispark pro — C++</div></div>
+        <div class="project"><a href="https://github.com/djarky/GB-Rubik-s-cubes" target="_blank" rel="noopener">GB-Rubik-s-cubes</a><div class="meta">Rubik's cube made in GBDK — (legacy)</div></div>
+        <div class="project"><a href="https://github.com/djarky/LIVE2Dbicha" target="_blank" rel="noopener">LIVE2Dbicha</a><div class="meta">(no description)</div></div>
+        <div class="project"><a href="https://github.com/djarky/anime_scrapper" target="_blank" rel="noopener">anime_scrapper</a><div class="meta">(Python) anime scrapper</div></div>
+        <div class="project"><a href="https://github.com/djarky/blender-render-pcb-on-colab" target="_blank" rel="noopener">blender-render-pcb-on-colab</a><div class="meta">render Kicad pcb in Blender on Colab — Jupyter Notebook</div></div>
+        <div class="project"><a href="https://github.com/djarky/potgame" target="_blank" rel="noopener">potgame</a><div class="meta">Juego de potenciómetros con Arduino y HTML — HTML</div></div>
+        <div class="project"><a href="https://github.com/djarky/PDF_Visual_editor_python" target="_blank" rel="noopener">PDF_Visual_editor_python</a><div class="meta">(duplicate) pdf editor — Python</div></div>
+        <div class="project"><a href="https://github.com/djarky/PSeInt_draw_library" target="_blank" rel="noopener">PSeInt_draw_library</a><div class="meta">(Papyrus) PSeInt drawing helper</div></div>
+      </div>
+      <p style="margin-top:12px; color:var(--muted)">Nota: la lista fue indexada automáticamente desde tus repositorios públicos. Si quieres cambiar el orden, ocultar algunos o añadir descripciones personalizadas, indícalo y lo actualizo.</p>
+    </section>
 
-<div id="game">
-      <div id="paddle1" class="paddle"></div>
-      <div id="paddle2" class="paddle"></div>
-      <div id="ball"></div>
-    </div>
-    
-    <!-- Contenido principal -->
-<main>
-    <h2 id="sobre-mi">Sobre mi</h2>
-    <p>Soy un desarrollador de videojuegos apasionado que ha trabajado en proyectos para Gameboy, hack de arduino con tarjetas WiFi esp8266 y Nintendo DS. También tengo experiencia en programación en Python,javascript, C y C++.</p>
+    <section id="tutoriales" aria-labelledby="tutoriales-title">
+      <h2 id="tutoriales-title">Tutoriales / recursos</h2>
+      <ul>
+        <li><a href="https://m.youtube.com/playlist?list=PLsna_ll6dtMlKm08uyb7lPar4QVyRQL4O" target="_blank" rel="noopener">Tutoriales GBDK en YouTube</a></li>
+        <li><a href="https://djarky.itch.io" target="_blank" rel="noopener">Mis juegos en itch.io</a></li>
+      </ul>
+    </section>
+  </main>
 
-<li><a href="https://djarky.github.io/UwU-tv"> UwU tv</a></li>
+  <footer>
+    <div>© djarky — <span id="year"></span></div>
+  </footer>
 
-<li><a href="https://djarky.itch.io"> itch.io</a></li>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-<li><a href="https://github.com/djarky/">github</a></li>
-    
-    <h2 id="proyectos">Proyectos</h2>
-    <ul>
-<li><a href="https://github.com/djarky/UwU-tv">UwU-tv </a></li>
-        <li><a href="https://github.com/djarky/GB-PROGRAMMING">GBDK games</a></li>
-        <li><a href="https://github.com/djarky/DDR2PIU">DDR2PIU</a></li>
-        <li><a href="https://github.com/djarky/NDS-Controller-nodeMCU">esp8266 NDS Controller</a></li>
-    </ul>
-    
-    <h2 id="tutoriales">Tutoriales GBDK</h2>
-    <ul>
-        <li><a href="https://m.youtube.com/playlist?list=PLsna_ll6dtMlKm08uyb7lPar4QVyRQL4O">YouTube</a></li>
-        
-    </ul>
-    
-    
-</main>
-
-    
-    <!-- Pie de página -->
-    <footer>
-        <p>Derechos Reservados &copy; 2023</p>
-    </footer>
+    (function(){
+      const game = document.getElementById('game');
+      const ballEl = document.getElementById('ball');
+      const p1 = document.getElementById('paddle1');
+      const p2 = document.getElementById('paddle2');
+      let W = game.clientWidth;
+      let H = game.clientHeight;
+      const PADDLE_H = 50; const PADDLE_W = 10; const BALL_S = 10;
+      let paddle1Y = (H - PADDLE_H)/2; let paddle2Y = (H - PADDLE_H)/2; let paddle2Dir = 0;
+      let ballX = (W - BALL_S)/2; let ballY = (H - BALL_S)/2; let ballVX = 4; let ballVY = 3;
+      function resize(){ W = game.clientWidth; H = game.clientHeight; paddle1Y = Math.min(paddle1Y, H - PADDLE_H); paddle2Y = Math.min(paddle2Y, H - PADDLE_H); }
+      window.addEventListener('resize', resize);
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'ArrowUp') paddle2Dir = -1; if(e.key === 'ArrowDown') paddle2Dir = 1; });
+      document.addEventListener('keyup', (e)=>{ if(e.key === 'ArrowUp' || e.key === 'ArrowDown') paddle2Dir = 0; });
+      function step(){ ballX += ballVX; ballY += ballVY; if(ballY <= 0 || ballY + BALL_S >= H) ballVY *= -1; if(ballX <= PADDLE_W){ if(ballY + BALL_S >= paddle1Y && ballY <= paddle1Y + PADDLE_H) ballVX *= -1; else { ballX = (W-BALL_S)/2; ballY = (H-BALL_S)/2; } } if(ballX + BALL_S >= W - PADDLE_W){ if(ballY + BALL_S >= paddle2Y && ballY <= paddle2Y + PADDLE_H) ballVX *= -1; else { ballX = (W-BALL_S)/2; ballY = (H-BALL-S)/2; } } if(ballY > paddle1Y + PADDLE_H/2) paddle1Y += 2; else paddle1Y -= 2; paddle1Y = Math.max(0, Math.min(H - PADDLE_H, paddle1Y)); paddle2Y += paddle2Dir * 4; paddle2Y = Math.max(0, Math.min(H - PADDLE_H, paddle2Y)); p1.style.top = paddle1Y + 'px'; p2.style.top = paddle2Y + 'px'; ballEl.style.left = ballX + 'px'; ballEl.style.top = ballY + 'px'; requestAnimationFrame(step); }
+      p1.style.left = '10px'; p2.style.right = '10px'; p1.style.height = PADDLE_H + 'px'; p1.style.width = PADDLE_W + 'px'; p2.style.height = PADDLE_H + 'px'; p2.style.width = PADDLE_W + 'px'; ballEl.style.width = BALL_S + 'px'; ballEl.style.height = BALL_S + 'px'; requestAnimationFrame(step);
+    })();
+  </script>
 </body>
 </html>
-
-
-<style>
-
-/* Estilos generales */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-}
-
-/* Estilos del encabezado */
-header {
-    background-color: #333;
-    color: #fff;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 20px;
-}
-
-header h1 {
-    margin: 0;
-    font-family: 'Common Pixel';
-    width :40%;
-}
-
-nav ul {
-    display: flex;
-    flex-direction: row;
-    margin:  0;
-    padding: 0;
-    width :30%;
-	 float:left;
-    right:10px;
-    font-family: 'Common Pixel';
-}
-
-nav li {
-    list-style: none;
-    margin-left: 20px;
-}
-
-nav a {
-    color: #fff;
-    text-decoration: none;
-}
-
-
-@media only screen and (max-width: 480px) {
-nav ul {
-    display: flex;
-    flex-direction: column;
-    margin:  0;
-    padding: 0;
-    width :30%;
-	 float:left;
-    right:10px;
-}
-
-} 
-
-/* Estilos del contenido principal */
-main {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 40px;
-}
-
-h2 {
-    border-bottom: 1px solid #ccc;
-    font-size: 1.5em;
-    margin-top: 40px;
-    padding-bottom: 10px;
-    
-}
-
-ul {
-    margin: 0;
-    padding: 0;
-}
-
-li {
-    margin-bottom: 10px;
-}
-
-a {
-    color: #0077c0;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Estilos del pie de página */
-footer {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 20px;
-}
-
-     #game {
-        position: relative;
-        width: 100%;
-        height: 300px;
-        background-color: black;
-      }
-
-      .paddle {
-        position: absolute;
-        width: 10px;
-        height: 50px;
-        background-color: white;
-      }
-
-      #paddle1 {
-        left: 10px;
-        top: 125px;
-      }
-
-      #paddle2 {
-        right: 10px;
-        top: 125px;
-      }
-
-      #ball {
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        background-color: white;
-      }
-</style>
-
-<script>
-
-      var SCREEN_WIDTH = window.innerWidth;
-      var SCREEN_HEIGHT = 300;
-      var PADDLE_WIDTH = 10;
-      var PADDLE_HEIGHT = 50;
-      var BALL_SIZE = 10;
-      var MAX_PADDLE_SPEED = 5;
-      var ballX = 195;
-      var ballY = 145;
-      var ballXDirection = 1;
-      var ballYDirection = 1;
-      var paddle1Y = 125;
-      var paddle2Y = 125;
-      var paddle1YDirection = 0;
-      var paddle2YDirection = 0;
-
-      var ball = document.getElementById('ball');
-      var paddle1 = document.getElementById('paddle1');
-      var paddle2 = document.getElementById('paddle2');
-
-      document.addEventListener('keydown', handleKeyDown);
-      document.addEventListener('keyup', handleKeyUp);
-
-      setInterval(gameLoop, 20);
-
-
-
-
-
-      function gameLoop() {
-        moveBall();
-        moveComputerPaddle();
-      }
-
-      function moveBall() {
-        // move the ball
-        ballX += ballXDirection * 5;
-        ballY += ballYDirection * 5;
-        ball.style.left = ballX + 'px';
-        ball.style.top = ballY + 'px';
-
-        // check for collision with the top or bottom of the screen
-        if (ballY <= 0 || ballY >= SCREEN_HEIGHT - BALL_SIZE) {
-          ballYDirection *= -1;
-        }
-
-        // check for collision with the left or right edge of the screen
-        if (ballX <= 0 || ballX >= SCREEN_WIDTH - BALL_SIZE) {
-          ballXDirection *= -1;
-        }
-
-        // check for collision with the paddles
-        if (ballX <= PADDLE_WIDTH && ballY + BALL_SIZE >= paddle1Y && ballY <= paddle1Y + PADDLE_HEIGHT) {
-          ballXDirection *= -1;
-        }
-
-        if (ballX >= SCREEN_WIDTH - PADDLE_WIDTH - BALL_SIZE && ballY + BALL_SIZE >= paddle2Y && ballY <= paddle2Y + PADDLE_HEIGHT) {
-          ballXDirection *= -1;
-        }
-      }
-
-function handleKeyDown(event) {
-  switch (event.key) {
-    case 'ArrowUp':
-      paddle2YDirection = -1;
-      break;
-    case 'ArrowDown':
-      paddle2YDirection = 1;
-      break;
-  }
-}
-
-function handleKeyUp(event) {
-  switch (event.key) {
-    case 'ArrowUp':
-      paddle2YDirection = 0;
-      break;
-    case 'ArrowDown':
-      paddle2YDirection = 0;
-      break;
-  }
-}
-
-function moveComputerPaddle() {
-  // move the computer paddle
-  if (ballY > paddle1Y + PADDLE_HEIGHT / 2) {
-    paddle1YDirection = 1;
-  } else if (ballY < paddle1Y + PADDLE_HEIGHT / 2) {
-    paddle1YDirection = -1;
-  } else {
-    paddle1YDirection = 0;
-  }
-
-  paddle1Y += paddle1YDirection * MAX_PADDLE_SPEED;
-  paddle1Y = Math.max(0, Math.min(SCREEN_HEIGHT - PADDLE_HEIGHT, paddle1Y));
-  paddle1.style.top = paddle1Y + 'px';
-
-  // move the player paddle
-  paddle2Y += paddle2YDirection * MAX_PADDLE_SPEED;
-  paddle2Y = Math.max(0, Math.min(SCREEN_HEIGHT - PADDLE_HEIGHT, paddle2Y));
-  paddle2.style.top = paddle2Y + 'px';
-}
-    </script>
-
-

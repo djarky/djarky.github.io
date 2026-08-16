@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Monitor MIDI</title>
+  <style>
+    body {
+      font-family: monospace;
+      background-color: #111;
+      color: #0f0;
+      padding: 20px;
+    }
+    #terminal {
+      background: #000;
+      border: 1px solid #0f0;
+      padding: 10px;
+      height: 400px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>Terminal MIDI</h1>
+  <div id="terminal">Esperando conexión MIDI...</div>
+
+  <script>
+    const terminal = document.getElementById("terminal");
+
+    function logToTerminal(message) {
+      terminal.textContent += message + "\n";
+      terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    function onMIDIMessage(event) {
+      const data = event.data;
+      const [status, data1, data2] = data;
+      const timestamp = event.timeStamp.toFixed(2);
+
+      logToTerminal(`t=${timestamp}ms | status: ${status}, data1: ${data1}, data2: ${data2}`);
+    }
+
+    function onMIDISuccess(midiAccess) {
+      logToTerminal("✅ Conexión MIDI exitosa. Escuchando...");
+
+      for (let input of midiAccess.inputs.values()) {
+        logToTerminal(`Conectado a: ${input.name}`);
+        input.onmidimessage = onMIDIMessage;
+      }
+
+      midiAccess.onstatechange = (e) => {
+        logToTerminal(`Cambio de estado: ${e.port.name} [${e.port.state}]`);
+      };
+    }
+
+    function onMIDIFailure(error) {
+      logToTerminal("❌ Error al acceder a dispositivos MIDI: " + error);
+    }
+
+    // Solicita acceso MIDI
+    if (navigator.requestMIDIAccess) {
+      navigator.requestMIDIAccess().then(onMIDISuccess, onMIDIFailure);
+    } else {
+      logToTerminal("❌ Tu navegador no soporta la Web MIDI API.");
+    }
+  </script>
+</body>
+</html>

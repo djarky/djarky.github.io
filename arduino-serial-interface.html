@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interfaz Arduino Serial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 80px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .connected {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .disconnected {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Interfaz Arduino Serial</h1>
+        
+        <div class="controls">
+            <button id="connect">Conectar a Arduino</button>
+            <button id="disconnect" disabled>Desconectar</button>
+        </div>
+        
+        <div id="status" class="status disconnected">Desconectado</div>
+        
+        <div class="form-group">
+            <label for="inputText">Mensaje a enviar:</label>
+            <textarea id="inputText" placeholder="Escribe aquí el mensaje para Arduino"></textarea>
+        </div>
+        
+        <button id="send" disabled>Enviar</button>
+        
+        <div class="form-group">
+            <label for="outputText">Respuesta de Arduino:</label>
+            <textarea id="outputText" readonly placeholder="Aquí aparecerá la respuesta de Arduino"></textarea>
+        </div>
+    </div>
+
+    <script>
+        let port;
+        let reader;
+        let writer;
+        
+        const connectButton = document.getElementById('connect');
+        const disconnectButton = document.getElementById('disconnect');
+        const sendButton = document.getElementById('send');
+        const statusDiv = document.getElementById('status');
+        const inputText = document.getElementById('inputText');
+        const outputText = document.getElementById('outputText');
+        
+        // Comprobar si el navegador soporta Web Serial API
+        if ('serial' in navigator) {
+            connectButton.addEventListener('click', connectToArduino);
+            disconnectButton.addEventListener('click', disconnectFromArduino);
+            sendButton.addEventListener('click', sendToArduino);
+        } else {
+            statusDiv.textContent = 'Tu navegador no soporta Web Serial API. Prueba con Chrome v89 o superior.';
+            statusDiv.className = 'status disconnected';
+            connectButton.disabled = true;
+        }
+        
+        async function connectToArduino() {
+            try {
+                // Solicitar puerto al usuario (mostrará un diálogo)
+                port = await navigator.serial.requestPort();
+                
+                // Abrir el puerto con la configuración típica de Arduino
+                await port.open({ baudRate: 9600 });
+                
+                // Configurar reader y writer
+                reader = port.readable.getReader();
+                writer = port.writable.getWriter();
+                
+                // Actualizar UI
+                statusDiv.textContent = 'Conectado a Arduino';
+                statusDiv.className = 'status connected';
+                connectButton.disabled = true;
+                disconnectButton.disabled = false;
+                sendButton.disabled = false;
+                
+                // Iniciar la lectura continua
+                readFromArduino();
+                
+            } catch (error) {
+                console.error('Error al conectar:', error);
+                statusDiv.textContent = 'Error de conexión: ' + error.message;
+                statusDiv.className = 'status disconnected';
+            }
+        }
+        
+        async function disconnectFromArduino() {
+            if (reader) {
+                await reader.cancel();
+                reader.releaseLock();
+            }
+            
+            if (writer) {
+                writer.releaseLock();
+            }
+            
+            if (port) {
+                await port.close();
+            }
+            
+            // Actualizar UI
+            statusDiv.textContent = 'Desconectado';
+            statusDiv.className = 'status disconnected';
+            connectButton.disabled = false;
+            disconnectButton.disabled = true;
+            sendButton.disabled = true;
+        }
+        
+        async function sendToArduino() {
+            if (!writer) return;
+            
+            const message = inputText.value;
+            if (!message) return;
+            
+            try {
+                // Convertir texto a array de bytes
+                const encoder = new TextEncoder();
+                const data = encoder.encode(message + '\n'); // Añadir nueva línea para que Arduino pueda procesarlo
+                
+                // Enviar datos
+                await writer.write(data);
+                
+                // Limpiar el área de entrada
+                inputText.value = '';
+                
+            } catch (error) {
+                console.error('Error al enviar:', error);
+                outputText.value += '⚠️ Error al enviar: ' + error.message + '\n';
+            }
+        }
+        
+        async function readFromArduino() {
+            const decoder = new TextDecoder();
+            
+            try {
+                while (true) {
+                    const { value, done } = await reader.read();
+                    
+                    if (done) {
+                        break;
+                    }
+                    
+                    // Decodificar y mostrar la respuesta
+                    const text = decoder.decode(value);
+                    outputText.value += text;
+                    outputText.scrollTop = outputText.scrollHeight; // Auto-scroll
+                }
+            } catch (error) {
+                console.error('Error al leer:', error);
+                outputText.value += '⚠️ Error al leer: ' + error.message + '\n';
+            } finally {
+                if (reader) {
+                    reader.releaseLock();
+                }
+            }
+        }
+    </script>
+</body>
+</html>

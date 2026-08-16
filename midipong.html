@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong con MIDI</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+            margin: 0;
+        }
+        canvas {
+            border: 2px solid white;
+        }
+        .score {
+            position: absolute;
+            top: 10px;
+            color: white;
+            font-size: 30px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="pong" width="800" height="400"></canvas>
+    <div id="score" class="score">
+        0 - 0
+    </div>
+
+    <script>
+        // Configuración inicial del canvas
+        const canvas = document.getElementById('pong');
+        const context = canvas.getContext('2d');
+
+        // Paletas y pelota
+        const paddleWidth = 10, paddleHeight = 100;
+        let leftPaddleY = (canvas.height - paddleHeight) / 2;
+        let rightPaddleY = (canvas.height - paddleHeight) / 2;
+        let ballX = canvas.width / 2, ballY = canvas.height / 2, ballRadius = 10;
+        let ballSpeedX = 5, ballSpeedY = 5;
+
+        // Puntuación
+        let leftScore = 0;
+        let rightScore = 0;
+
+        // Función para dibujar las paletas y la pelota
+        function draw() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dibujar la paleta izquierda
+            context.fillStyle = 'white';
+            context.fillRect(0, leftPaddleY, paddleWidth, paddleHeight);
+
+            // Dibujar la paleta derecha
+            context.fillRect(canvas.width - paddleWidth, rightPaddleY, paddleWidth, paddleHeight);
+
+            // Dibujar la pelota
+            context.beginPath();
+            context.arc(ballX, ballY, ballRadius, 0, Math.PI * 2, false);
+            context.fillStyle = 'white';
+            context.fill();
+            context.closePath();
+
+            // Mover la pelota
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+
+            // Rebotar la pelota en las paredes superior e inferior
+            if (ballY + ballRadius > canvas.height || ballY - ballRadius < 0) {
+                ballSpeedY = -ballSpeedY;
+            }
+
+            // Rebotar la pelota en las paletas
+            if (ballX - ballRadius < paddleWidth && ballY > leftPaddleY && ballY < leftPaddleY + paddleHeight) {
+                ballSpeedX = -ballSpeedX;
+            }
+            if (ballX + ballRadius > canvas.width - paddleWidth && ballY > rightPaddleY && ballY < rightPaddleY + paddleHeight) {
+                ballSpeedX = -ballSpeedX;
+            }
+
+            // Si la pelota pasa una paleta, actualizar la puntuación
+            if (ballX - ballRadius < 0) {
+                rightScore++;  // Punto para el jugador de la derecha
+                resetBall();
+            }
+            if (ballX + ballRadius > canvas.width) {
+                leftScore++;   // Punto para el jugador de la izquierda
+                resetBall();
+            }
+
+            // Actualizar el marcador
+            document.getElementById('score').textContent = `${leftScore} - ${rightScore}`;
+        }
+
+        // Reiniciar la pelota al centro después de un punto
+        function resetBall() {
+            ballX = canvas.width / 2;
+            ballY = canvas.height / 2;
+            ballSpeedX = -ballSpeedX;
+        }
+
+        // Configurar control MIDI
+        function setupMIDI() {
+            if (navigator.requestMIDIAccess) {
+                navigator.requestMIDIAccess().then(
+                    (midiAccess) => {
+                        const inputs = midiAccess.inputs;
+                        inputs.forEach((input) => {
+                            input.onmidimessage = (message) => {
+                                handleMIDIMessage(message);
+                            };
+                        });
+                    },
+                    (error) => {
+                        console.error("Error al acceder a MIDI:", error);
+                    }
+                );
+            } else {
+                alert('La API Web MIDI no está soportada en este navegador.');
+            }
+        }
+
+        // Manejar los mensajes MIDI
+        function handleMIDIMessage(message) {
+            const data = message.data;
+            const command = data[0]; // El primer byte es el comando (MIDI control change)
+            const controller = data[1]; // El segundo byte es el número del controlador (CC1 o CC2)
+            const value = data[2]; // El tercer byte es el valor del controlador
+
+            // CC1 (Control Change 1) mueve la paleta izquierda
+            if (controller === 2) {
+                leftPaddleY = (canvas.height - paddleHeight) * (value / 127);
+            }
+
+            // CC2 (Control Change 2) mueve la paleta derecha
+            if (controller === 1) {
+                rightPaddleY = (canvas.height - paddleHeight) * (value / 127);
+            }
+        }
+
+        // Llamar a la función de configuración de MIDI
+        setupMIDI();
+
+        // Actualizar el juego
+        function gameLoop() {
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
+</body>
+</html>
